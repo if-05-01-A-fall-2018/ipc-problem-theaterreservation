@@ -84,10 +84,8 @@
                            <children>
                               <Label prefHeight="18.0" prefWidth="154.0" text="Firstname " />
                               <Label text="Lastname " GridPane.rowIndex="1" />
-                              <Label prefHeight="18.0" prefWidth="110.0" text="Seat Number" GridPane.rowIndex="3" />
                               <TextField fx:id="firstNameTextfield" onAction="#onTextfieldClick" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" />
                               <TextField fx:id="lastNameTextfield" onAction="#onTextfieldClick" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <TextField fx:id="seatNumberTextfield" onAction="#onTextfieldClick" prefHeight="12.0" prefWidth="199.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                               <Label prefHeight="18.0" prefWidth="110.0" text="Email" GridPane.rowIndex="2" />
                               <TextField fx:id="emailTextfield" onAction="#onTextfieldClick" style="-fx-background-color: lightgray;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                            </children>

@@ -10,6 +10,7 @@ public class SeatsDatabase {
 
     private LinkedList<Viewer> list;
     public static SeatsDatabase instance = null;
+    public  LinkedList<Reserver> seatArray = new LinkedList<Reserver>();
 
     private SeatsDatabase(){
         list = new LinkedList<Viewer>();
@@ -30,5 +31,17 @@ public class SeatsDatabase {
 
     public ObservableList<Viewer> getFullList(){
         return FXCollections.observableList(list);
+    }
+
+    public boolean reserveSeat(Reserver r){
+        if(seatArray.size() <= 100){
+            seatArray.add(r);
+            return true;
+        }
+        return false;
+    }
+
+    public int getFreeSeats(){
+        return 100 - seatArray.size();
     }
 }

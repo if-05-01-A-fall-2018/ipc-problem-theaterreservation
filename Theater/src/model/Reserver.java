@@ -6,11 +6,11 @@ public class Reserver implements Runnable{
     private static String email;
     private static String seatNo;
 
-    public Reserver(String firstName, String lastName, String email, String seatNo ){
+    public Reserver(String firstName, String lastName, String email){
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.seatNo = seatNo;
+
     }
 
     public static String getFirstName() {

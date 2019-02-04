@@ -17,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
+import model.Reserver;
 import model.SeatsDatabase;
 import model.Viewer;
 
@@ -56,8 +57,15 @@ public class Controller implements Initializable {
 
     public List<Viewer> ViewerList = new LinkedList<Viewer>();
     @FXML
-    void onReserveButtonClick(ActionEvent event) {
-
+    void onReserveButtonClick(ActionEvent event) throws InterruptedException {
+        Reserver r = new Reserver(firstNameTextfield.getText(), lastNameTextfield.getText(), emailTextfield.getText());
+        seats.reserveSeat(r);
+        freeSeatLable.setText(String.valueOf(seats.getFreeSeats()) + "/100");
+        Thread.sleep(2000);
+        firstNameTextfield.clear();
+        lastNameTextfield.clear();
+        emailTextfield.clear();
+        reserverBlock = false;
     }
 
     @FXML
@@ -113,7 +121,7 @@ public class Controller implements Initializable {
 
             while (true) {
                 try {
-                    if(fiveS(end)){
+                    if(fiveS(end) && !reserverBlock){
                         start = new Date().getTime();
                         end = start + 5000;
                         createViewer();
@@ -128,6 +136,7 @@ public class Controller implements Initializable {
                             listViewID.refresh();
                         }
                     }
+
                 }
                 catch (Exception e) {
                 }
@@ -152,6 +161,6 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        freeSeatLable.setText("100/100");
     }
 }
