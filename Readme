@@ -1,1 +1,12 @@
-Doesnt work how it should :( 
+Idea:
+
+When generate viewers is press viewers get genarated witch hava a random viewtime(process time) 
+and while this is happaning you cant do any reservations. The viewers are can be seen in listview.
+
+If no viewers are pressent in the listview because they used there viewtime up you can click on a Textfield witch should block the
+viewers from viewing. 
+
+If the reserve button is presst viewers can be genarated again. 
+
+
+Doesnt work how it should/ unfinished :( 
