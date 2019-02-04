@@ -9,18 +9,22 @@ import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 import model.Viewer;
 
+import java.net.URL;
 import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-public class Controller{
+public class Controller implements Initializable {
 
     @FXML
     private Button viewButton;
@@ -41,8 +45,8 @@ public class Controller{
     private TextField emailTextfield;
 
     @FXML
-    private ListView<String> ListViewForViewers;
-
+    private ListView<Viewer> ListViewForViewers = new ListView<Viewer>();
+    DropShadow shadow = new DropShadow();
     public int mode = 0;
     //-1 viewerblock
     //0 no init
@@ -73,11 +77,9 @@ public class Controller{
                 }
                 Viewer v = new Viewer(viewerNumberID);
                 ViewerList.add(v);
-
-                /*ListViewForViewers.setItems(FXCollections.observableList(
-                        ViewerList.stream()
-                                .map(x -> Integer.toString(v.getViewerNumberID())).collect(Collectors.toList())
-                ));*/
+                //TODO ADD Viewers to the listView
+                ListViewForViewers.setItems(FXCollections.observableList(ViewerList));
+                ListViewForViewers.refresh();
 
                 System.out.println("ViewID            " + viewerNumberID);
                 viewerNumberID++;
@@ -98,5 +100,8 @@ public class Controller{
     }
 
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
 
+    }
 }
