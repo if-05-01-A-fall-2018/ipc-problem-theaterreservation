@@ -79,30 +79,55 @@ public class Controller implements Initializable {
 
     LinkedList<Viewer> waity = new LinkedList<Viewer>();
 
+    Viewer createViewer(){
+        int viewerNumberID = 0;
+        Viewer v = new Viewer(viewerNumberID);
+        seats.addViewer(v);
+        waity.add(v);
+        System.out.println(ViewerList.size());
+        //TODO ADD Viewers to the listView then display them
+        listViewID.setItems(FXCollections.observableList(seats.getFullList()));
+        listViewID.refresh();
+        System.out.println("ViewID            " + viewerNumberID);
+        viewerNumberID++;
+        return v;
+    }
+
+    public boolean fiveS(long end){
+        boolean five = false;
+        long now = new Date().getTime();
+        if(now >= end){
+            five = true;
+        }
+        return five;
+    }
+
     Task<Void> genViewers = new Task<Void>() {
         // Have to do this in a Task otherwise the program crashs
         @Override
         protected Void call() throws Exception {
-            int viewerNumberID = 0;
+            long start = new Date().getTime();
+            long end = start + 5000;
+            Viewer v = createViewer();
+
+
             while (true) {
                 try {
-                    Viewer v = new Viewer(viewerNumberID);
-                    v.run();
-                    seats.addViewer(v);
-                    waity.add(v);
-                    System.out.println(ViewerList.size());
-                    //TODO ADD Viewers to the listView then display them
-                    listViewID.setItems(FXCollections.observableList(seats.getFullList()));
-                    listViewID.refresh();
-                    viewerNumberID++;
-                    /*
-                    if(waity.getFirst().IsDone){
-                        seats.removeViewer(v);
-                        listViewID.setItems(FXCollections.observableList(seats.getFullList()));
-                        listViewID.refresh();
-                    }*/
-                    Thread.sleep(getSleepTime());
+                    if(fiveS(end)){
+                        start = new Date().getTime();
+                        end = start + 5000;
+                        createViewer();
+                    }
+                    //Thread.sleep(getSleepTime());
 
+                    if(waity.getFirst()!= null){
+                        if(waity.getFirst().isDone()){
+                            seats.removeViewer(waity.getFirst());
+                            waity.remove(waity.getFirst());
+                            listViewID.setItems(FXCollections.observableList(seats.getFullList()));
+                            listViewID.refresh();
+                        }
+                    }
                 }
                 catch (Exception e) {
                 }
@@ -111,12 +136,12 @@ public class Controller implements Initializable {
         }
     };
 
-    int getSleepTime()
+    /*int getSleepTime()
     {
         Random rand = new Random();
-        int value = rand.nextInt(2 )  + 2 ;
+        int value = rand.nextInt(3 )  + 3;
         return value *1000;
-    }
+    }*/
 
     @FXML
     void onTextfieldClick(ActionEvent event) {

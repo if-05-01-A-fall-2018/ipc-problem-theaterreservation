@@ -4,16 +4,17 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.Random;
 
-public class Viewer extends Thread
+public class Viewer implements Runnable
 {
     public long viewTime;
     public int viewerNumberID;
-    public boolean IsDone;
+    long  start = new Date().getTime();
+    long end ;
 
     public Viewer(int viewerNumberID) {
         this.viewerNumberID = viewerNumberID;
         this.viewTime = getRandomViewTime();
-        this.IsDone = false;
+        this.end = start + (6 * 1000) ;
     }
 
     public long getViewTime() {
@@ -22,26 +23,21 @@ public class Viewer extends Thread
     public void setViewTime(int viewTime) {
         this.viewTime = viewTime;
     }
-
     // every viewer gets a random view time
     int getRandomViewTime(){
         Random rand = new Random();
-        int value = rand.nextInt(6 )  + 10;
+        int value = rand.nextInt(6 )  + 9;
         return value;
     }
     public int getViewerNumberID() {
         return viewerNumberID;
     }
-
     @Override
     public void run() {
-        try {
-            System.out.println("run viewer" + this.getViewerNumberID());
-            Thread.sleep(viewTime * 1000);
-            System.out.println("            End Viewer" + this.getViewerNumberID());
-            this.IsDone = true;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    }
+
+    public boolean isDone(){
+        if(  new Date().getTime() >= end){ return true; }
+        return false;
     }
 }
