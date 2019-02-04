@@ -1,6 +1,6 @@
 package model;
 
-public class Reserver implements Runnable{
+public class Reserver {
     private static String firstName;
     private static String lastName;
     private static String email;
@@ -42,10 +42,5 @@ public class Reserver implements Runnable{
 
     public static void setSeatNo(String seatNo) {
         Reserver.seatNo = seatNo;
-    }
-
-    @Override
-    public void run() {
-
     }
 }

@@ -17,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
+import model.SeatsDatabase;
 import model.Viewer;
 
 import java.net.URL;
@@ -34,20 +35,21 @@ public class Controller implements Initializable {
     private Label freeSeatLable;
     @FXML
     private TextField firstNameTextfield;
-
     @FXML
     private TextField lastNameTextfield;
-
     @FXML
     private TextField seatNumberTextfield;
 
     @FXML
     private TextField emailTextfield;
-
     @FXML
-    private ListView<Viewer> ListViewForViewers = new ListView<Viewer>();
+    private ListView<Viewer> listViewID = new ListView<Viewer>();
+
     DropShadow shadow = new DropShadow();
-    public int mode = 0;
+    boolean viewerBlock = false;
+    boolean reserverBlock = false;
+    private SeatsDatabase seats = SeatsDatabase.getSeatsDatabase();
+
     //-1 viewerblock
     //0 no init
     //1 Reserverblock
@@ -60,10 +62,22 @@ public class Controller implements Initializable {
 
     @FXML
     void onViewButtonClick(ActionEvent event){
-        if(mode == 0 || mode == 1){
+        if(viewerBlock == false && reserverBlock == false) { //application starrted no viewer and writer block active
+            reserverBlock = true;
+            listViewID.setItems(FXCollections.observableList(seats.getFullList()));
+            listViewID.refresh();
             new Thread(genViewers).start();
         }
+        else if(viewerBlock == true && reserverBlock == false){ //Reserver button was allready presst
+
+        }
+        else if(viewerBlock == false && reserverBlock == true){ // Viewer button was presst a second time
+
+        }
+
     }
+
+    LinkedList<Viewer> waity = new LinkedList<Viewer>();
 
     Task<Void> genViewers = new Task<Void>() {
         // Have to do this in a Task otherwise the program crashs
@@ -72,17 +86,27 @@ public class Controller implements Initializable {
             int viewerNumberID = 0;
             while (true) {
                 try {
+                    Viewer v = new Viewer(viewerNumberID);
+                    v.run();
+                    seats.addViewer(v);
+                    waity.add(v);
+                    System.out.println(ViewerList.size());
+                    //TODO ADD Viewers to the listView then display them
+                    listViewID.setItems(FXCollections.observableList(seats.getFullList()));
+                    listViewID.refresh();
+                    viewerNumberID++;
+                    /*
+                    if(waity.getFirst().IsDone){
+                        seats.removeViewer(v);
+                        listViewID.setItems(FXCollections.observableList(seats.getFullList()));
+                        listViewID.refresh();
+                    }*/
                     Thread.sleep(getSleepTime());
-                } catch (Exception e) {
-                }
-                Viewer v = new Viewer(viewerNumberID);
-                ViewerList.add(v);
-                //TODO ADD Viewers to the listView
-                ListViewForViewers.setItems(FXCollections.observableList(ViewerList));
-                ListViewForViewers.refresh();
 
-                System.out.println("ViewID            " + viewerNumberID);
-                viewerNumberID++;
+                }
+                catch (Exception e) {
+                }
+
             }
         }
     };
@@ -90,13 +114,14 @@ public class Controller implements Initializable {
     int getSleepTime()
     {
         Random rand = new Random();
-        int value = rand.nextInt(3 )  + 3;
+        int value = rand.nextInt(2 )  + 2 ;
         return value *1000;
     }
 
     @FXML
     void onTextfieldClick(ActionEvent event) {
-
+        reserverBlock = true;
+        
     }
 
 
